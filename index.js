@@ -1,16 +1,19 @@
 const express = require('express');
-const mysql = require('mysql2');  // Cambiado a mysql2
+const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv'); // Agrega esta línea para cargar las variables de entorno
+
+dotenv.config(); // Carga las variables de entorno desde el archivo .env
 
 const app = express();
 const port = 5000;
 
 const db = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'juannn',
-  database: 'tuiranfitxx',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 app.use(cors());
@@ -47,7 +50,7 @@ app.post('/login', (req, res) => {
   const { correo, contra } = req.body;
 
   const query = 'SELECT * FROM usuarios WHERE correo = ? AND contrasena = ?';
-  db.execute(query, [correo, contra], (err, results) => {  // Cambiado a db.execute
+  db.execute(query, [correo, contra], (err, results) => {
     if (err) {
       console.error('Error en la consulta de inicio de sesión:', err);
       return res.status(500).send('Error al consultar la base de datos.');
