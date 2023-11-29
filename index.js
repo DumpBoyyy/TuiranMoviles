@@ -15,6 +15,10 @@ const db = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
+app.get('/', (req, res) => {
+  res.send('Bienvenido a la API de TuiranFit');
+});
+
 
 app.use(cors());
 app.use(bodyParser.json());
